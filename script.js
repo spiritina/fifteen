@@ -5,14 +5,12 @@ let arr = [],
     final = [[1,2,3,4],[5,6,7,8], [9,10,11,12], [13,14,15,0]];
 
 generateRandomArray();
-if(isSolvable(arr)){
-console.log(arr);  
+if(isSolvable(arr)){ 
 buildFieldModel();} else {
     let tmp = arr[0];
     arr[0] = arr[1];
     arr[1] = tmp;
     buildFieldModel();
-    
 }
 
 function generateRandomArray() {
@@ -83,7 +81,16 @@ function isGameEnded(){
         }
     }
     
-        alert('You won!')
+        alert('You won!');
+    generateRandomArray();
+if(isSolvable(arr)){ 
+buildFieldModel();} else {
+    let tmp = arr[0];
+    arr[0] = arr[1];
+    arr[1] = tmp;
+    buildFieldModel();
+    zero = [3,3];
+}
     return true
     }
     
