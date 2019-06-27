@@ -1,0 +1,84 @@
+let arr = [],
+    fieldModel = [[], [], [], []],
+    field = document.getElementById('field'),
+    zero = [];
+
+generateRandomArray();
+console.log(arr);
+buildFieldModel();
+
+function generateRandomArray() {
+    for (let i = 0; i < 16; i++) {
+        arr[i] = i;
+    }
+    arr.sort(randomizeArray);
+}
+
+
+function buildFieldModel() {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            fieldModel[j].push(arr[i + (j * 4)]);
+            drawNumber(arr[i + j * 4], i, j);
+            if(arr[i + j * 4]==0){zero = [i,j]
+        }
+    }}
+    console.log(fieldModel);
+}
+
+function randomizeArray(a, b) {
+    return Math.random() - 0.5;
+}
+
+function drawNumber(i, x, y) {
+    let div = document.createElement('div');
+    div.innerHTML = i;
+    div.classList.add('number');
+    if (i == 0) {
+        div.innerHTML = '';
+        div.classList.add('zero');
+    };
+    
+    setPositionOfNumber(div, x,y);
+    div.addEventListener('click', function(){
+        let currentCoordinates = getCoordinates(this);
+        console.log(zero);
+        if ((Math.abs(currentCoordinates[0]-zero[0])+Math.abs(currentCoordinates[1]-zero[1]))==1){
+            changeElementWithZero(this, currentCoordinates);
+            isGameEnded()
+            }
+    })
+    field.appendChild(div);
+}
+function changeElementWithZero(elem, currentCoordinates){
+    console.log(currentCoordinates);
+let zeroDiv = document.getElementsByClassName('zero')[0];
+    setPositionOfNumber(zeroDiv, currentCoordinates[0], currentCoordinates[1]);
+    setPositionOfNumber(elem, zero[0], zero[1]);
+    let tmp = fieldModel[currentCoordinates[1]][currentCoordinates[0]];
+    console.log(tmp);
+    fieldModel[currentCoordinates[1]][currentCoordinates[0]] = 0;
+    fieldModel[zero[1]][zero[0]] = tmp;
+    zero = currentCoordinates;
+    console.log(fieldModel);
+}
+
+function isGameEnded(){
+    if (fieldModel==[[1,2,3,4],[5,6,7,8], [9,10,11,12], [13,14,15,0]]){
+        alert('You won!')
+    }
+}
+
+function setPositionOfNumber(elem, x,y){
+    elem.style.left = (25*x + '%');
+    elem.style.top = (25 * y + '%');
+    elem.setAttribute('data-x', x);
+    elem.setAttribute('data-y', y);
+}
+
+function getCoordinates(elem){
+    let x = +elem.dataset.x;
+    let y = +elem.dataset.y;
+    
+    return [x,y];
+}
